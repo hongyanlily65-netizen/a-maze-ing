@@ -1,0 +1,8 @@
+WIDTH=15
+HEIGHT=15
+ENTRY=0,0
+EXIT=14,14
+OUTPUT_FILE=maze.txt
+PERFECT=True
+# Optional: use the same integer to reproduce the same maze.
+SEED=42
