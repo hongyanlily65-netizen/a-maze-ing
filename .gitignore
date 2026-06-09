@@ -1,0 +1,11 @@
+.venv/
+venv/
+env/
+!config.txt
+*.txt
+__pycache__/
+.mypy_cache/
+build/
+*.pyc
+*.egg-info/
+*.whl
