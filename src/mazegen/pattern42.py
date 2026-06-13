@@ -15,7 +15,15 @@ PATTERN = {
 
 
 def add_42_pattern(maze: "MazeGenerator") -> set[tuple[int, int]]:
-    """Return a valid center-first 42 pattern, or omit it when impossible."""
+    """Find a valid center-first location for the closed-cell 42 pattern.
+
+    Args:
+        maze: Maze in which to position the pattern.
+
+    Returns:
+        Coordinates occupied by the pattern, or an empty set when no valid
+        position exists.
+    """
     if maze.width < 9 or maze.height < 7:
         print("Warning: maze is too small to contain the 42 pattern.")
         return set()
@@ -52,7 +60,15 @@ def add_42_pattern(maze: "MazeGenerator") -> set[tuple[int, int]]:
 def _remaining_cells_connected(
     maze: "MazeGenerator", pattern: set[tuple[int, int]]
 ) -> bool:
-    """Return whether every non-pattern cell remains mutually reachable."""
+    """Check whether all cells outside a proposed pattern remain connected.
+
+    Args:
+        maze: Maze whose dimensions and endpoints are checked.
+        pattern: Proposed set of closed pattern coordinates.
+
+    Returns:
+        ``True`` if every non-pattern cell is reachable from the entry.
+    """
     available = {
         (x, y)
         for y in range(maze.height)

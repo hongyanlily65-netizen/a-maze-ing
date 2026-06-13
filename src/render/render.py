@@ -15,7 +15,14 @@ def render_ascii(
     show_path: bool,
     theme: dict[str, str],
 ) -> None:
-    """Print the maze, endpoints, 42 pattern and optional solution path."""
+    """Print a colored ASCII representation of a maze.
+
+    Args:
+        maze: Generated maze to render.
+        path: Coordinates of the solution path.
+        show_path: Whether to display the solution path.
+        theme: ANSI colors for walls, the path, and resetting output.
+    """
     wall = theme["wall"]
     path_color = theme["path"]
     reset = theme["reset"]

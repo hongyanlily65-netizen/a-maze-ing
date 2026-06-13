@@ -7,7 +7,15 @@ from .maze_generator import MazeGenerator, Wall
 
 
 def solve_shortest(maze: MazeGenerator) -> list[tuple[int, int]]:
-    """Return the shortest path from entry to exit."""
+    """Find the shortest path from the maze entry to its exit.
+
+    Args:
+        maze: Generated maze to solve.
+
+    Returns:
+        Ordered coordinates from entry to exit, or an empty list if no path
+        exists.
+    """
     queue = deque([maze.entry])
     parent: dict[
         tuple[int, int], Optional[tuple[int, int]]
@@ -39,7 +47,14 @@ def solve_shortest(maze: MazeGenerator) -> list[tuple[int, int]]:
 
 
 def directions(path: list[tuple[int, int]]) -> str:
-    """Convert a coordinate path to N, E, S and W letters."""
+    """Convert a coordinate path to cardinal direction letters.
+
+    Args:
+        path: Ordered coordinates forming a connected path.
+
+    Returns:
+        A string containing ``N``, ``E``, ``S``, and ``W`` moves.
+    """
     result = []
     for (x, y), (next_x, next_y) in zip(path, path[1:]):
         if next_y < y:

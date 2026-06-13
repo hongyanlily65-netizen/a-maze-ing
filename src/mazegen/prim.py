@@ -8,7 +8,14 @@ if TYPE_CHECKING:
 
 
 def generate_prim(maze: "MazeGenerator") -> None:
-    """Carve a connected maze while leaving the 42 cells closed."""
+    """Carve a connected maze while leaving the 42 cells closed.
+
+    Args:
+        maze: Maze generator containing the grid and generation settings.
+
+    Raises:
+        ValueError: If the 42 pattern overlaps the entry or disconnects cells.
+    """
     from .maze_generator import Wall
 
     available = {
@@ -42,7 +49,11 @@ def generate_prim(maze: "MazeGenerator") -> None:
 
 
 def _add_loop(maze: "MazeGenerator") -> None:
-    """Remove one extra internal wall to make the maze imperfect."""
+    """Remove one extra internal wall to make a maze imperfect.
+
+    Args:
+        maze: Generated maze to modify.
+    """
     from .maze_generator import Wall
 
     candidates = [

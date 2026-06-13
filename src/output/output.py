@@ -4,7 +4,16 @@ from src.mazegen import MazeGenerator
 
 
 def write_output(maze: MazeGenerator, path: str, solution: str) -> None:
-    """Write grid, endpoints and shortest path using the required format."""
+    """Write a maze and its solution using the required output format.
+
+    Args:
+        maze: Generated maze to serialize.
+        path: Destination file path.
+        solution: Shortest path encoded as cardinal direction letters.
+
+    Raises:
+        OSError: If the destination file cannot be written.
+    """
     with open(path, "w", encoding="utf-8") as output_file:
         for row in maze.grid:
             output_file.write("".join(f"{cell:X}" for cell in row) + "\n")

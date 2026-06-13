@@ -5,7 +5,17 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class MazeConfig:
-    """Validated maze configuration."""
+    """Store validated settings used to generate and save a maze.
+
+    Attributes:
+        width: Number of maze columns.
+        height: Number of maze rows.
+        entry: Entry coordinate as an ``(x, y)`` pair.
+        exit: Exit coordinate as an ``(x, y)`` pair.
+        output_file: Destination path for the generated maze.
+        perfect: Whether the maze must contain exactly one path between cells.
+        seed: Random seed, where ``"0"`` requests a non-deterministic seed.
+    """
 
     width: int
     height: int
@@ -17,7 +27,18 @@ class MazeConfig:
 
 
 def _coordinate(value: str, key: str) -> tuple[int, int]:
-    """Parse an x,y coordinate."""
+    """Parse an ``x,y`` configuration value.
+
+    Args:
+        value: Raw coordinate text.
+        key: Configuration key used in validation messages.
+
+    Returns:
+        The parsed coordinate as an ``(x, y)`` pair.
+
+    Raises:
+        ValueError: If the value does not contain exactly two integers.
+    """
     parts = value.split(",")
     if len(parts) != 2:
         raise ValueError(f"{key} must use the x,y format")
@@ -28,7 +49,17 @@ def _coordinate(value: str, key: str) -> tuple[int, int]:
 
 
 def _boolean(value: str) -> bool:
-    """Parse a strict True or False value."""
+    """Parse a strict ``True`` or ``False`` configuration value.
+
+    Args:
+        value: Raw Boolean text.
+
+    Returns:
+        The parsed Boolean value.
+
+    Raises:
+        ValueError: If the value is neither ``True`` nor ``False``.
+    """
     normalized = value.lower()
     if normalized == "true":
         return True
@@ -38,7 +69,18 @@ def _boolean(value: str) -> bool:
 
 
 def load_config(path: str) -> MazeConfig:
-    """Load a configuration file and validate its values."""
+    """Load and validate a maze configuration file.
+
+    Args:
+        path: Path to the configuration file.
+
+    Returns:
+        A validated maze configuration.
+
+    Raises:
+        OSError: If the configuration file cannot be opened.
+        ValueError: If syntax, keys, values, or coordinates are invalid.
+    """
     allowed = {
         "WIDTH", "HEIGHT", "ENTRY", "EXIT",
         "OUTPUT_FILE", "PERFECT", "SEED",

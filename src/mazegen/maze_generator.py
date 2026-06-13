@@ -17,7 +17,18 @@ class Wall(IntEnum):
 
 
 class MazeGenerator:
-    """Generate a maze with randomized Prim's algorithm."""
+    """Generate and manipulate a maze using randomized Prim's algorithm.
+
+    Attributes:
+        width: Number of maze columns.
+        height: Number of maze rows.
+        entry: Entry coordinate.
+        exit: Exit coordinate.
+        perfect: Whether generation should avoid loops.
+        seed: Random seed, where ``"0"`` requests a non-deterministic seed.
+        grid: Generated grid of wall bitmasks.
+        pattern42: Coordinates reserved for the closed-cell 42 pattern.
+    """
 
     def __init__(
         self,
@@ -28,7 +39,16 @@ class MazeGenerator:
         perfect: bool = True,
         seed: str = "0",
     ) -> None:
-        """Store generation settings."""
+        """Initialize a maze generator.
+
+        Args:
+            width: Number of maze columns.
+            height: Number of maze rows.
+            entry: Entry coordinate as an ``(x, y)`` pair.
+            exit_pos: Exit coordinate as an ``(x, y)`` pair.
+            perfect: Whether generation should avoid creating loops.
+            seed: Random seed, where ``"0"`` requests a non-deterministic seed.
+        """
         self.width = width
         self.height = height
         self.entry = entry
@@ -39,7 +59,14 @@ class MazeGenerator:
         self.pattern42: set[tuple[int, int]] = set()
 
     def generate(self) -> list[list[int]]:
-        """Create and return a new maze."""
+        """Create a new maze grid.
+
+        Returns:
+            The generated grid, whose cells contain wall bitmasks.
+
+        Raises:
+            ValueError: If the 42 pattern prevents connected generation.
+        """
         random.seed(None if self.seed == "0" else self.seed)
         self.grid = [
             [15 for _ in range(self.width)] for _ in range(self.height)
@@ -51,7 +78,15 @@ class MazeGenerator:
     def neighbor(
         self, cell: tuple[int, int], wall: Wall
     ) -> tuple[int, int]:
-        """Return the neighboring coordinate in one direction."""
+        """Return the coordinate adjacent to a cell in one direction.
+
+        Args:
+            cell: Source coordinate.
+            wall: Direction from the source cell.
+
+        Returns:
+            The neighboring coordinate, which may be outside the maze.
+        """
         x, y = cell
         moves = {
             Wall.NORTH: (x, y - 1),
@@ -62,12 +97,24 @@ class MazeGenerator:
         return moves[wall]
 
     def inside(self, cell: tuple[int, int]) -> bool:
-        """Return whether a coordinate is inside the maze."""
+        """Check whether a coordinate is inside the maze.
+
+        Args:
+            cell: Coordinate to check.
+
+        Returns:
+            ``True`` when the coordinate lies within the maze boundaries.
+        """
         x, y = cell
         return 0 <= x < self.width and 0 <= y < self.height
 
     def connect(self, cell: tuple[int, int], wall: Wall) -> None:
-        """Remove matching walls between two neighboring cells."""
+        """Remove the shared wall between two neighboring cells.
+
+        Args:
+            cell: Coordinate of the first cell.
+            wall: Wall of the first cell to remove.
+        """
         x, y = cell
         nx, ny = self.neighbor(cell, wall)
         opposite = {

@@ -11,7 +11,7 @@ from src.render import THEMES, render_ascii
 
 
 def clear_screen() -> None:
-    """Clear an interactive terminal."""
+    """Clear the screen when standard output is an interactive terminal."""
     if sys.stdout.isatty():
         os.system("clear")
 
@@ -19,7 +19,19 @@ def clear_screen() -> None:
 def generate_maze(
     maze: MazeGenerator, output_file: str
 ) -> list[tuple[int, int]]:
-    """Generate, solve, and write a maze."""
+    """Generate a maze, solve it, and write the result to a file.
+
+    Args:
+        maze: Configured maze generator to run.
+        output_file: Destination path for the hexadecimal maze output.
+
+    Returns:
+        The shortest coordinate path from the entry to the exit.
+
+    Raises:
+        OSError: If the output file cannot be written.
+        ValueError: If no path exists between the entry and exit.
+    """
     maze.generate()
     path = solve_shortest(maze)
     if not path:
@@ -29,7 +41,12 @@ def generate_maze(
 
 
 def main() -> int:
-    """Load, generate, render and interact with a maze."""
+    """Run the command-line maze application.
+
+    Returns:
+        Zero after a normal exit, or one when configuration, generation, or
+        output fails.
+    """
     if len(sys.argv) != 2:
         print(f"Usage: python3 {sys.argv[0]} config.txt", file=sys.stderr)
         return 1
