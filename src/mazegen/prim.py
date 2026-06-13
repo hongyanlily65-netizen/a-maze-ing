@@ -1,5 +1,6 @@
 """Randomized Prim maze generation."""
 
+import random
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -23,7 +24,7 @@ def generate_prim(maze: "MazeGenerator") -> None:
     visited = {start}
     frontier = [(start, wall) for wall in Wall]
     while frontier:
-        index = maze.random.randrange(len(frontier))
+        index = random.randrange(len(frontier))
         cell, wall = frontier.pop(index)
         next_cell = maze.neighbor(cell, wall)
         if next_cell not in available or next_cell in visited:
@@ -54,6 +55,6 @@ def _add_loop(maze: "MazeGenerator") -> None:
         and maze.neighbor((x, y), wall) not in maze.pattern42
         and maze.grid[y][x] & wall
     ]
-    maze.random.shuffle(candidates)
+    random.shuffle(candidates)
     if candidates:
         maze.connect(*candidates[0])

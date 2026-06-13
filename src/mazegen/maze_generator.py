@@ -2,7 +2,6 @@
 
 import random
 from enum import IntEnum
-from typing import Optional
 
 from .pattern42 import add_42_pattern
 from .prim import generate_prim
@@ -27,7 +26,7 @@ class MazeGenerator:
         entry: tuple[int, int],
         exit_pos: tuple[int, int],
         perfect: bool = True,
-        seed: Optional[int] = None,
+        seed: str = "0",
     ) -> None:
         """Store generation settings."""
         self.width = width
@@ -38,11 +37,10 @@ class MazeGenerator:
         self.seed = seed
         self.grid: list[list[int]] = []
         self.pattern42: set[tuple[int, int]] = set()
-        self.random = random.Random(seed)
 
     def generate(self) -> list[list[int]]:
         """Create and return a new maze."""
-        self.random = random.Random(self.seed)
+        random.seed(None if self.seed == "0" else self.seed)
         self.grid = [
             [15 for _ in range(self.width)] for _ in range(self.height)
         ]

@@ -1,7 +1,6 @@
 """Read and validate the maze configuration file."""
 
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass(frozen=True)
@@ -14,7 +13,7 @@ class MazeConfig:
     exit: tuple[int, int]
     output_file: str
     perfect: bool
-    seed: Optional[int] = None
+    seed: str = "0"
 
 
 def _coordinate(value: str, key: str) -> tuple[int, int]:
@@ -70,7 +69,8 @@ def load_config(path: str) -> MazeConfig:
     try:
         width = int(values["WIDTH"])
         height = int(values["HEIGHT"])
-        seed = int(values["SEED"]) if values.get("SEED") else None
+        seed = values.get("SEED") or "0"
+        int(seed)
     except ValueError as error:
         raise ValueError("WIDTH, HEIGHT and SEED must be integers") from error
 

@@ -66,7 +66,7 @@ def main() -> int:
             return 0
         if choice == "1":
             try:
-                maze.seed = None
+                maze.seed = "0"
                 path = generate_maze(maze, config.output_file)
                 show_path = False
             except (OSError, ValueError) as error:
